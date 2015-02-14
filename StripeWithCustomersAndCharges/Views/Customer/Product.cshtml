@@ -1,0 +1,36 @@
+﻿@{
+ 
+    List<StripeWithCustomersAndCharges.Models.Product> products = new List<StripeWithCustomersAndCharges.Models.Product>() { new StripeWithCustomersAndCharges.Models.Product() {Description = "Prod1", Price = 100.00 }, 
+                                                                     new StripeWithCustomersAndCharges.Models.Product() {Description = "Prod2", Price = 400.00 },
+                                                                     new StripeWithCustomersAndCharges.Models.Product() {Description = "Prod3", Price = 125.00 } };  
+    
+    
+}
+<table class="table">
+    <tr>
+        <th>
+            Description
+        </th>
+        <th>
+            Price
+        </th>
+        <th></th>
+    </tr>
+
+    @ViewBag.CustomerID
+
+@foreach (var product in products) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => product.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => product.Price)
+        </td>
+        <td>
+            @Html.ActionLink("Buy", "Buy", new { id = @ViewBag.CustomerID, price = product.Price }) 
+        </td>
+    </tr>
+}
+
+</table>

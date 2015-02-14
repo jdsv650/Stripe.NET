@@ -1,0 +1,123 @@
+﻿@model StripeWithCustomersAndCharges.Models.CustomerWithCard
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+<div>
+    <h4>Stripe Charge Example</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label for="txtCardNumber">Card Number *</label>
+        </dt>
+        <dd>
+            <input type="text" name="CardNumber" id="txtCardNumber" placeholder="Card Number e.g 1234..." />
+        </dd>
+        <dt>
+            <label for="txtCvc">Cvc *</label>
+        </dt>
+        <dd>
+            <input type="text" name="Cvc" id="txtCvc" placeholder="Security Code e.g 987" />
+        </dd>
+        <dt>
+            <label for="txtExpiryMonth">Expiry Month (MM) *</label>
+        </dt>
+        <dd>
+            <input type="text" name="ExpiryMonth" id="txtExpiryMonth" placeholder="01" />
+        </dd>
+        <dt>
+            <label for="txtExpiryYear">Expiry Year (YYYY) *</label>)
+        </dt>
+        <dd>
+            <input type="text" name="ExpiryYear" id="txtExpiryYear" placeholder="2015" />
+        </dd>
+    </dl>
+</div>
+
+
+
+@using (Html.BeginForm("CreateWithCard", "Customer", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "frmCharge" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>CustomerWithCard</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <p>
+            @Html.HiddenFor(model => model.Token, new { id = "hdnToken" })
+           
+            @Html.ActionLink("ProcessPayment", "ChargeWithCard", null, new { id = "btnCharge" })
+        </p>
+
+    </div>
+}
+
+
+@section Scripts {
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+        $('document').ready(function () {
+            Stripe.setPublishableKey('pk_test_PUSHTOGITHUB');
+
+            $('#btnCharge').on('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                Stripe.card.createToken({
+                    number: $('#txtCardNumber').val(),
+                    cvc: $('#txtCvc').val(),
+                    exp_month: $('#txtExpiryMonth').val(),
+                    exp_year: $('#txtExpiryYear').val()
+                }, stripeResponseHandler);
+            });
+
+            function stripeResponseHandler(status, response) {
+                var $form = $('#frmCharge');
+
+                if (response.error) {
+                    // Show the errors on the form
+                    alert(response.error.message);
+                } else {
+                    // response contains id and card, which contains additional card details
+                    var token = response.id;
+                    // Insert the token into the form so it gets submitted to the server
+                    $('#hdnToken').val(token);
+                    // and submit
+                    $form.get(0).submit();
+                }
+            }
+        });
+    </script>
+}
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

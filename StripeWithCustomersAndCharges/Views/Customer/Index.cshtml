@@ -1,0 +1,28 @@
+﻿@model IEnumerable<StripeWithCustomersAndCharges.Models.Customer>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("CreateWithCard", "CreateWithCard")
+</p>
+<table class="table">
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Card Details", "Details", new { id=item.ID } ) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID }) |
+            @Html.ActionLink("Product", "Product", new { id = item.ID }) |
+            @Html.ActionLink("GetMyCharges", "GetMyCharges", new { id = item.ID }) 
+        </td>
+    </tr>
+}
+
+</table>

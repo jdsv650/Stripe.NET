@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Stripe.StripeCharge>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+           
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+
+        </td>
+        <td>
+            <div> Refunded? </div> 
+            @Html.DisplayFor(modelItem => item.Refunded) 
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Currency)
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer)
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Paid)
+
+        </td>
+
+        <td>
+            @Html.ActionLink("Update", "Update",  "Charge" , new { id=item.Id }, null) |
+            @Html.ActionLink("Details", "Details", "Charge", new { id=item.Id }, null) |
+            @Html.ActionLink("Refund", "Delete", "Charge", new { id=item.Id }, null)
+        </td>
+    </tr>
+}
+
+</table>

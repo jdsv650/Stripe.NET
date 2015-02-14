@@ -1,0 +1,68 @@
+﻿@model Stripe.StripeCharge
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th></th>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Id)
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Amount)
+
+        </td>
+        <td>
+            <div> Refunded? </div>
+            @Html.DisplayFor(modelItem => modelItem.Refunded)
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Created)
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Currency)
+
+        </td>
+        <td>
+
+            @Html.DisplayFor(modelItem => modelItem.CustomerId)
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Description)
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.Object)
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => modelItem.ReceiptEmail)
+
+        </td>
+
+    </tr>
+
+</table>
+
+
+@using (Html.BeginForm("Delete", "Charge", new { Model }, FormMethod.Post))
+{ 
+    @Html.AntiForgeryToken()
+   
+    <p>
+        <div class="form-actions no-color">
+            <input type="submit" value="Refund Charge" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </p>
+}
+
+
